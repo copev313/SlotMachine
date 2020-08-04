@@ -1,0 +1,83 @@
+body {
+	background-color: rgb(56, 208, 165);
+	margin-top: 100px;
+	font-family: system-ui;
+}
+
+h1 {
+	font-size: 60px;
+	font-family: "Ranchers", cursive;
+	text-align: center;
+	padding-bottom: 80px;
+	color: white;
+}
+
+.gameSpace {
+	background-color: #178CE9;
+	border: 3px solid black;
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 30px 30px 100px 30px;
+	color: rgb(22, 28, 53);
+	text-align: center;
+	font-size: 25px;
+}
+
+#try-your-luck {
+	font-family: 'Monoton', cursive;
+	font-size: 32px;
+	background-color: black;
+	color: #23DFF8;
+	margin: 5px 5px 20px 5px;
+}
+
+.slotMachine {
+	height: 120px;
+	margin: 5%;
+}
+
+.grid-container {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	grid-template-rows: 120px;
+	gap: 2px 2px;
+	grid-template-areas: "one two three";
+}
+
+.slot {
+	border: 4px solid black;
+	background-color: black;
+}
+
+.icon {
+	margin-top: 12px;
+}
+
+/* CSS Grid Containers */
+.one { grid-area: one; }
+.two { grid-area: two; }
+.three { grid-area: three; }
+
+/* Icon Color Adjustments */
+.air-freshener { fill: lime; }
+.anchor { fill: grey; }
+.atom { fill: white; }
+.table-tennis { fill: yellow; }
+.hat-cowboy-side { fill: saddlebrown; }
+
+button {
+	width: 100px;
+	height: 50px;
+	font-size: 24px;
+	margin-top: 35px;
+	margin-bottom: -15%;
+}
+
+footer {
+	position: fixed;
+	padding: 10px 10px 0px 10px;
+	bottom: 0;
+	width: 100%;
+	height: 220px;
+	font-size: 14px;
+}
