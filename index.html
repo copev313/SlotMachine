@@ -1,29 +1,28 @@
 <!-- 
-SAMPLE PROJECT: Slot Machine
+Slot Machine Project:
 Completed as part of The JavaScript Full-Stack Bootcamp.
 Instructor: Flavio Copes
-Last Edit: 8/4/20  by E.Cope
+Last Edit: 8/5/20  by E.Cope
 -->
 <head>
 	<title>SLOT MACHINE!</title>
-	<link rel="stylesheet" type="text/css" href="..\CSS\style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
 		@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 	</style>
 	<script src="https://kit.fontawesome.com/e6f8705633.js" 
-					crossorigin="anonymous">
+			crossorigin="anonymous">
 	</script>
 </head>
 
 <body>
-<script src="..\JavaScript\script.js"></script>
+<script src="script.js"></script>
 
 	<h1>A Simple Slot Machine</h1>
 
 <div class="gameSpace">
 	<p id="try-your-luck">TRY YOUR LUCK!</p>
-
 	<div class="slotMachine">
 		<div class="grid-container">
 			
@@ -81,18 +80,24 @@ Last Edit: 8/4/20  by E.Cope
 					</svg>
 			</div>
 			
-		</div> <!-- end of 'grid-container' -->
-
-	<button id="spin-button"><strong>SPIN!</strong></button>
-	
+		</div>
+		<button id="spin-button"><strong>SPIN!</strong></button>
+	</div>
 </div>
 </body>
 
-<footer class="createdBySpace" style="text-align: center;">
-	<p id="reset"><a href='javascript:void(0)'>TIME WARP</a></p>
-	<p id='game-stats'><strong><ins>Game Stats</ins></strong></p>
+<footer class="footer-grid">
+	<div class="left">
+		<hr>
+		<p id='game-stats'><strong><ins>Game Stats</ins></strong></p>
 		<p><ins>Odds</ins>: 1 in 25</p>
-		<p><ins>Number of Spins</ins></p>
-		<p id="number-of-spins">0</p>
-	<p style="text-align: center;">Last editted: 8/4/20 by E.Cope --- Version 1.0.2</p>
+		<p id="number-of-spins"><ins>Number of Spins</ins>: 0</p>
+	</div>
+	<div class="middle">
+		<p id="reset"><a href='javascript:void(0)'>TIME WARP</a></p>
+	</div>
+	<div class="right">
+		<hr>
+		<p>Last editted: 8/5/20 by E.Cope --- Version 1.0.3</p>
+	</div>
 </footer>

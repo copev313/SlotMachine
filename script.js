@@ -6,12 +6,7 @@ const iconIdArray = [
 	"#icon-five"
 ];
 
-let spinCount = 0;
-
-function myFriendRandy(min, max) {
-	let randy = Math.random() * (max - min) + min;
-	return Math.floor(randy);
-}
+function randy(max) { return Math.floor(Math.random() * max); }
 
 //clears the icons
 function disappear() {
@@ -22,10 +17,9 @@ function disappear() {
 	}
 }
 
-//displays the appropriate icons in the slots
+//displays the appropriate icons in the appropriate slots... appropriately.
 function magicAct(numOne, numTwo, numThree) {
 	disappear(); //icon reset
-
 	for (let i = 0; i < iconIdArray.length; i++) {
 		//check slot one
 		if (numOne == i) {
@@ -39,10 +33,10 @@ function magicAct(numOne, numTwo, numThree) {
 		if (numThree == i) {
 			document.querySelector(".three").querySelector(iconIdArray[numThree]).style.display = "initial";
 		}
-	} //end loop
+	}
 }
 
-//checks to see if the player has won
+//checks to see if the player has won.
 function winCondition(numOne, numTwo, numThree) {
 	if (numOne == numTwo && numTwo == numThree) {
 		document.getElementById("try-your-luck").innerHTML = "WINNER!";
@@ -53,25 +47,27 @@ function winCondition(numOne, numTwo, numThree) {
 ///////////////////////////////////////////////////////////////////////////////////
 
 document.addEventListener("DOMContentLoaded", () => {
-	//clear slots
+	//clear slots, initialize variables...
 	disappear();
+	let spinCount = 0;
+	const len = iconIdArray.length;
 
 	document.getElementById("spin-button").addEventListener("click", () => {
+		//if statement to keep the game from breaking after you have won
 		if (document.getElementById("try-your-luck").innerHTML !== "WINNER!") {
-			let index1 = myFriendRandy(0, iconIdArray.length);
-			let index2 = myFriendRandy(0, iconIdArray.length);
-			let index3 = myFriendRandy(0, iconIdArray.length);
+			let index1 = randy(len);
+			let index2 = randy(len);
+			let index3 = randy(len);
 
 			spinCount += 1;
-			document.getElementById("number-of-spins").innerHTML = spinCount;
+			document.getElementById("number-of-spins").innerHTML = "<ins>Number of Spins</ins>: " + spinCount;
+
 			console.log(index1, index2, index3);
 			magicAct(index1, index2, index3);
 			winCondition(index1, index2, index3);
 		}
 	});
 
-	//Time Warp Link
-	document
-		.getElementById("reset")
-		.addEventListener("click", () => location.reload());
+	//Time Warp Link (that just reloads the page)
+	document.getElementById("reset").addEventListener("click", () => location.reload());
 });
