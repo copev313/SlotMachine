@@ -1,7 +1,7 @@
 # SlotMachine
-SAMPLE PROJECT: Slot Machine
-Completed as part of The JavaScript Full-Stack Bootcamp.
-Instructor: Flavio Copes
-Last Edit: 8/4/20  by E.Cope
+
+#### Completed as part of The JavaScript Full-Stack Bootcamp.
+
+Last Edit: 8/4/20
 
 Thanks for reading!
