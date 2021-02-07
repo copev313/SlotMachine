@@ -1,6 +1,6 @@
 # SlotMachine
 
-#### Completed as part of The JavaScript Full-Stack Bootcamp.
+#### Completed as part of a JavaScript Full-Stack Bootcamp.
 
 Last Edit: 8/4/20
 
