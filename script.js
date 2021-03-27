@@ -1,77 +1,134 @@
-const iconIdArray = [
-	"#icon-one",
-	"#icon-two",
-	"#icon-three",
-	"#icon-four",
-	"#icon-five"
-];
 
-let spinCount = 0;
+const iconIdArray = ["#icon-1", "#icon-2", "#icon-3", "#icon-4", "#icon-5" ];
 
-function myFriendRandy(min, max) {
-	let randy = Math.random() * (max - min) + min;
-	return Math.floor(randy);
+let spinCount, winCount, loseCount, leastCount, mostCount;
+[spinCount, winCount, loseCount, leastCount, mostCount] = [0, 0, 0, 0, 0];
+
+//generates random number btw min and max
+function rng(min, max) {
+	const rand = Math.random() * (max - min) + min;
+	return Math.floor(rand);
 }
 
 //clears the icons
 function disappear() {
 	for (let i = 0; i < iconIdArray.length; i++) {
-		document.querySelector(".one").querySelector(iconIdArray[i]).style.display = "none";
-		document.querySelector(".two").querySelector(iconIdArray[i]).style.display = "none";
-		document.querySelector(".three").querySelector(iconIdArray[i]).style.display = "none";
+		document.querySelector(".s1").querySelector(iconIdArray[i]).style.display = "none";
+		document.querySelector(".s2").querySelector(iconIdArray[i]).style.display = "none";
+		document.querySelector(".s3").querySelector(iconIdArray[i]).style.display = "none";
 	}
 }
 
-//displays the appropriate icons in the slots
+//displays the appropriate icons in their slots
 function magicAct(numOne, numTwo, numThree) {
-	disappear(); //icon reset
+
+	//clear icons
+	disappear(); 
 
 	for (let i = 0; i < iconIdArray.length; i++) {
 		//check slot one
 		if (numOne == i) {
-			document.querySelector(".one").querySelector(iconIdArray[numOne]).style.display = "initial";
+			document.querySelector(".s1")
+					.querySelector(iconIdArray[numOne]).style.display = "initial";
 		}
 		//check slot two
 		if (numTwo == i) {
-			document.querySelector(".two").querySelector(iconIdArray[numTwo]).style.display = "initial";
+			document.querySelector(".s2").querySelector(iconIdArray[numTwo]).style.display = "initial";
 		}
 		//check slot three
 		if (numThree == i) {
-			document.querySelector(".three").querySelector(iconIdArray[numThree]).style.display = "initial";
+			document.querySelector(".s3").querySelector(iconIdArray[numThree]).style.display = "initial";
 		}
-	} //end loop
+	}
 }
 
 //checks to see if the player has won
 function winCondition(numOne, numTwo, numThree) {
 	if (numOne == numTwo && numTwo == numThree) {
-		document.getElementById("try-your-luck").innerHTML = "WINNER!";
-		document.getElementById("try-your-luck").style.color = "white";
+		//change sign to say WINNER!
+		$("#try-your-luck").text("WINNER!");
+		$("#try-your-luck").css("color", "white");
+
+		//display PLAY AGAIN button
+		$("#reset-btn").css("visibility", "visible");
+
+		//TODO: add 1 to wins stat
+
 	}
+}
+
+//stores our records in the browser's localStorage
+function store(wins, loses, leastSpins, mostSpins) {
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-document.addEventListener("DOMContentLoaded", () => {
+$(document).ready(function(){
+
+	console.info("DEBUG: Ready!");	//debug
+
 	//clear slots
 	disappear();
 
-	document.getElementById("spin-button").addEventListener("click", () => {
-		if (document.getElementById("try-your-luck").innerHTML !== "WINNER!") {
-			let index1 = myFriendRandy(0, iconIdArray.length);
-			let index2 = myFriendRandy(0, iconIdArray.length);
-			let index3 = myFriendRandy(0, iconIdArray.length);
+	//check browser support for localStorage:
+	if (typeof(Storage) !== "undefined") {
+		console.info("DEBUG: Web Storage activated!"); //debug
+		//store();
+	} else { 
+		console.warn("DEBUG: Sorry! No Web Storage support!"); //debug
+	}
 
+	//spin-btn event listener:
+	$("#spin-btn").click(function(){
+
+		$(document)
+
+		//CASE -- We Won!:
+		if ($("#try-your-luck").innerHTML === "WINNER!") {
+			//
+		}
+		//CASE -- We Lost:
+		else {
+			//declare and initialize our indexes for icon selection:
+			let index1, index2, index3;
+			[index1, index2, index3] = [rng(0, iconIdArray.length),
+										rng(0, iconIdArray.length),
+										rng(0, iconIdArray.length)];
+			//increment spinCount:							
 			spinCount += 1;
-			document.getElementById("number-of-spins").innerHTML = spinCount;
-			console.log(index1, index2, index3);
+			document.getElementById("num-spins").innerHTML = spinCount;
+
+			console.log(`DEBUG: (${index1}, ${index2}, ${index3})`); //debug
 			magicAct(index1, index2, index3);
 			winCondition(index1, index2, index3);
 		}
 	});
 
-	//Time Warp Link
-	document
-		.getElementById("reset")
-		.addEventListener("click", () => location.reload());
+	//reset-btn event listener:
+	$("#reset-btn").click(function(){
+		location.reload();
+	});
 });
+
+
+/*
+document.addEventListener("DOMContentLoaded", () => {
+
+	document.getElementById("spin-btn").addEventListener("click", () => {
+
+		// [CASE] We Haven't Won Yet:
+		if (document.getElementById("try-your-luck").innerHTML !== "WINNER!") {
+			let index1, index2, index3;
+			[index1, index2, index3] = [rng(0, iconIdArray.length),
+										rng(0, iconIdArray.length),
+										rng(0, iconIdArray.length)];
+			spinCount += 1;
+			document.getElementById("num-spins").innerHTML = spinCount;
+			console.log(index1, index2, index3);
+			magicAct(index1, index2, index3);
+			winCondition(index1, index2, index3);
+		}
+	});
+});
+*/

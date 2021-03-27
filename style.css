@@ -1,24 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+
+:root {
+	--bgColor: rgb(56, 208, 165);
+
+	--titleBaseTextColor: rgb(203, 255, 231);
+	--titleHoverTextColor: rgb(186, 255, 108);
+
+	--boxBgColor:  #178CE9;
+	--boxBdColor: rgb(39, 39, 39);
+
+	--luckTextColor: #23DFF8;
+	--luckBgColor: black;
+
+	--slotBgColor: black;
+}
+
 body {
-	background-color: rgb(56, 208, 165);
-	margin-top: 100px;
+	background-color: var(--bgColor);
+	margin: 50px 50px 0px 50px;
 	font-family: system-ui;
 }
 
-h1 {
-	font-size: 60px;
+.page-title {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	font-size: 4em;
+	font-weight: 400;
 	font-family: "Ranchers", cursive;
 	text-align: center;
-	padding-bottom: 80px;
-	color: white;
+	margin: 50px 50px 50px 50px;
+	color: var(--titleBaseTextColor);
 }
 
-.gameSpace {
-	background-color: #178CE9;
-	border: 3px solid black;
+#ws-hack { visibility:hidden; }
+
+.game-box {
+	background-color: var(--boxBgColor);
+	border: 5px solid var(--boxBdColor);
+	border-radius: 10px;
 	max-width: 400px;
 	margin: 0 auto;
-	padding: 30px 30px 100px 30px;
-	color: rgb(22, 28, 53);
+	padding: 25px;
 	text-align: center;
 	font-size: 25px;
 }
@@ -26,12 +50,15 @@ h1 {
 #try-your-luck {
 	font-family: 'Monoton', cursive;
 	font-size: 32px;
-	background-color: black;
-	color: #23DFF8;
-	margin: 5px 5px 20px 5px;
+	background-color: var(--luckBgColor);
+	color: var(--luckTextColor);
+	margin: 0px 5px 40px 5px;
+	padding: 5px 0px 5px 0px;
+	border: 1px solid black;
+	border-radius: 5px;
 }
 
-.slotMachine {
+.slot-machine {
 	height: 120px;
 	margin: 5%;
 }
@@ -40,23 +67,25 @@ h1 {
 	display: grid;
 	grid-template-columns: 33% 33% 33%;
 	grid-template-rows: 120px;
-	gap: 2px 2px;
-	grid-template-areas: "one two three";
-}
-
-.slot {
-	border: 4px solid black;
-	background-color: black;
-}
-
-.icon {
-	margin-top: 12px;
+	gap: 5px;
+	grid-template-areas: "s1 s2 s3";
 }
 
 /* CSS Grid Containers */
-.one { grid-area: one; }
-.two { grid-area: two; }
-.three { grid-area: three; }
+.s1 { grid-area: s1; }
+.s2 { grid-area: s2; }
+.s3 { grid-area: s3; }
+
+.slot { 
+	background-color: var(--slotBgColor);
+	border-radius: 10px;
+}
+
+.icon {
+	margin-top: 15%;
+	width: 80px;
+	height: 80px;
+}
 
 /* Icon Color Adjustments */
 .air-freshener { fill: lime; }
@@ -65,19 +94,73 @@ h1 {
 .table-tennis { fill: yellow; }
 .hat-cowboy-side { fill: saddlebrown; }
 
-button {
-	width: 100px;
-	height: 50px;
-	font-size: 24px;
-	margin-top: 35px;
-	margin-bottom: -15%;
+#spin-btn {
+	width: 115px;
+	height: 65px;
+	font-size: 22px;
+	font-weight: bold;
+	margin-top: 40px;
+	margin-bottom: 0;
+	outline: none;
+	border-radius: 40px;
 }
 
-footer {
-	position: fixed;
-	padding: 10px 10px 0px 10px;
+#spin-btn:hover { background-color: rgb(140, 251, 255); }
+
+.footer-container {
+	padding: 0px 10px 0px 10px;
 	bottom: 0;
+	right: 2;
 	width: 100%;
 	height: 220px;
 	font-size: 14px;
+}
+
+.play-again-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 30px;
+}
+
+#reset-btn {
+	visibility: hidden;
+	text-align: center;
+	font-weight: bold;
+	color: green;
+	background-color: var(--titleBaseTextColor);
+	border: 3px solid rgb(54, 255, 47, 0.75);
+	border-radius: 10px;
+	padding: 10px;
+	outline: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#reset-btn:hover {
+	color:rgb(0, 255, 0);
+	background-color: whitesmoke;
+}
+
+#stats-title {
+	padding: 0px;
+}
+
+.game-stats {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	text-align: right;
+}
+
+.ul { text-decoration: underline; }
+
+#num-spins ,
+#most-spins ,
+#least-spins ,
+#win-spins ,
+#lose-spins { 
+	font-weight: bold;
+	padding-left: 10px;
 }
