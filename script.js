@@ -1,8 +1,18 @@
+/**
+ *  script.js
+ *  ---------
+ *  Where all the fun happens :)
+ *  
+ *  Created by: E.Cope			Last edit: 3/27/21
+ */
 
-const iconIdArray = ["#icon-1", "#icon-2", "#icon-3", "#icon-4", "#icon-5" ];
+//store the classes and ids we'll be manipulating
+const iconIdsArr = ["#icon-1", "#icon-2", "#icon-3", "#icon-4", "#icon-5"];
+const slotClassArr = [".s1", ".s2", ".s3"];
 
-let spinCount, winCount, loseCount, leastCount, mostCount;
-[spinCount, winCount, loseCount, leastCount, mostCount] = [0, 0, 0, 0, 0];
+//setup stat variables
+let DataStore = { "wins": 0, "loses": 0, "most": 0, "least": 0 };
+const LocalStore = window.localStorage;
 
 //generates random number btw min and max
 function rng(min, max) {
@@ -10,125 +20,166 @@ function rng(min, max) {
 	return Math.floor(rand);
 }
 
-//clears the icons
+//clears the slot icons
 function disappear() {
-	for (let i = 0; i < iconIdArray.length; i++) {
-		document.querySelector(".s1").querySelector(iconIdArray[i]).style.display = "none";
-		document.querySelector(".s2").querySelector(iconIdArray[i]).style.display = "none";
-		document.querySelector(".s3").querySelector(iconIdArray[i]).style.display = "none";
+	for (let i = 0; i < iconIdsArr.length; i++) {
+		for (let j = 0; j < slotClassArr.length; j++) {
+			$(`${slotClassArr[j]}`).find(`${iconIdsArr[i]}`)
+								   .css("display", "none");
+		}
 	}
 }
 
-//displays the appropriate icons in their slots
-function magicAct(numOne, numTwo, numThree) {
-
-	//clear icons
+//displays the appropriate icons in their slots given three random numbers
+function magicAct(num1, num2, num3) {
+	//reset icons
 	disappear(); 
-
-	for (let i = 0; i < iconIdArray.length; i++) {
+	for (let i = 0; i < iconIdsArr.length; i++) {
 		//check slot one
-		if (numOne == i) {
-			document.querySelector(".s1")
-					.querySelector(iconIdArray[numOne]).style.display = "initial";
+		if (num1 == i) {
+			$(".s1").find(`${iconIdsArr[num1]}`)
+					.css("display", "initial");
 		}
 		//check slot two
-		if (numTwo == i) {
-			document.querySelector(".s2").querySelector(iconIdArray[numTwo]).style.display = "initial";
+		if (num2 == i) {
+			$(".s2").find(`${iconIdsArr[num2]}`)
+					.css("display", "initial");
 		}
 		//check slot three
-		if (numThree == i) {
-			document.querySelector(".s3").querySelector(iconIdArray[numThree]).style.display = "initial";
+		if (num3 == i) {
+			$(".s3").find(`${iconIdsArr[num3]}`)
+					.css("display", "initial");
 		}
 	}
 }
 
 //checks to see if the player has won
-function winCondition(numOne, numTwo, numThree) {
-	if (numOne == numTwo && numTwo == numThree) {
+function winCondition(num1, num2, num3) {
+	if (num1 == num2 && num2 == num3) {
 		//change sign to say WINNER!
 		$("#try-your-luck").text("WINNER!");
-		$("#try-your-luck").css("color", "white");
+		$("#try-your-luck").css("color", "lawngreen");
 
 		//display PLAY AGAIN button
 		$("#reset-btn").css("visibility", "visible");
 
-		//TODO: add 1 to wins stat
+		//add 1 to wins stat
+		DataStore.wins += 1;
+		LocalStore.setItem("NUM_WINS", DataStore.wins);
 
+		//refresh stats data
+		refreshStats();
 	}
 }
 
-//stores our records in the browser's localStorage
-function store(wins, loses, leastSpins, mostSpins) {
+//start localStorage
+function startStorage() {
+	const LS = LocalStore;
+	let DS = DataStore;
+	//CASE -- data is already established --> retrieve and store it in DS
+	if (LS.getItem("NUM_WINS") !== null) {
+		DS.wins = parseInt(LS.getItem("NUM_WINS"));
+		DS.loses = parseInt(LS.getItem("NUM_LOSES"));
+		DS.most = parseInt(LS.getItem("MOST_SPINS"));
+		DS.least = parseInt(LS.getItem("LEAST_SPINS"));
+	}
+	//CASE -- data needs established --> initialize values in LS
+	else {
+		LS.setItem("NUM_WINS", DS.wins);
+		LS.setItem("NUM_LOSES", DS.loses);
+		LS.setItem("MOST_SPINS", DS.most);
+		LS.setItem("LEAST_SPINS", DS.least);
+	}
+	return DS;
+}
 
+//refreshes our stats data displayed on the site
+function refreshStats() {
+	//use localStorage to load our game stats
+	let DS = DataStore;
+	$("#win-spins").text(DS.wins);
+	$("#lose-spins").text(DS.loses);
+	$("#most-spins").text(DS.most);
+	$("#least-spins").text(DS.least);
+}
+
+//resets our games stats in localStorage
+function resetLocalStorage() {
+	const conf = confirm("Are you sure you want to reset you game stats?");
+	if (conf) {
+		DataStore = { "wins": 0, "loses": 0, "most": 0, "least": 0 };
+		refreshStats();
+	}
+}
+
+//TODO
+function handleLeastMost() {
+	let le = DataStore.least;
+	let mo = DataStore.most;
+	//...
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 $(document).ready(function(){
-
-	console.info("DEBUG: Ready!");	//debug
-
 	//clear slots
 	disappear();
+	let spinCount = 0;
+	//load spinCount stats data
+	$("#num-spins").text(spinCount);
 
 	//check browser support for localStorage:
 	if (typeof(Storage) !== "undefined") {
-		console.info("DEBUG: Web Storage activated!"); //debug
-		//store();
+		//setup localStorage
+		DataStore = startStorage();
+		//load our stats data
+		refreshStats();
+
 	} else { 
-		console.warn("DEBUG: Sorry! No Web Storage support!"); //debug
+		console.warn("Web Storage not supported!");
 	}
 
 	//spin-btn event listener:
 	$("#spin-btn").click(function(){
 
-		$(document)
-
-		//CASE -- We Won!:
-		if ($("#try-your-luck").innerHTML === "WINNER!") {
-			//
+		//CASE -- We Won:
+		if ($("#try-your-luck").text() === "WINNER!") {
+			return;
 		}
 		//CASE -- We Lost:
 		else {
-			//declare and initialize our indexes for icon selection:
-			let index1, index2, index3;
-			[index1, index2, index3] = [rng(0, iconIdArray.length),
-										rng(0, iconIdArray.length),
-										rng(0, iconIdArray.length)];
-			//increment spinCount:							
-			spinCount += 1;
-			document.getElementById("num-spins").innerHTML = spinCount;
+			//generate our random indices for the slot icons
+			let dice = [];
+			for (let i = 0; i < slotClassArr.length; i++) {
+				let r = rng(0, iconIdsArr.length);
+				dice.push(r);
+			}
 
-			console.log(`DEBUG: (${index1}, ${index2}, ${index3})`); //debug
-			magicAct(index1, index2, index3);
-			winCondition(index1, index2, index3);
+			//increment spinCount (number of spins)							
+			spinCount += 1;
+			$("#num-spins").text(spinCount);
+			//increment lose in DataStore (number of loses stat)
+			DataStore.loses += 1;
+			//update NUM_LOSES data in localStorage
+			localStorage.setItem("NUM_LOSES", DataStore.loses);
+
+			console.log(`DEBUG: (${dice[0]}, ${dice[1]}, ${dice[2]})`); //debug
+
+			//display the appropriate icons based on the random indices
+			magicAct(dice[0], dice[1], dice[2]);
+			//check if we've won
+			winCondition(dice[0], dice[1], dice[2]);
 		}
+
+		//TOSO: update most and least spins stats
+		handleLeastMost();
+
+		//refresh stats
+		refreshStats();
 	});
 
 	//reset-btn event listener:
-	$("#reset-btn").click(function(){
+	$("#reset-btn").click(() => {
 		location.reload();
 	});
 });
-
-
-/*
-document.addEventListener("DOMContentLoaded", () => {
-
-	document.getElementById("spin-btn").addEventListener("click", () => {
-
-		// [CASE] We Haven't Won Yet:
-		if (document.getElementById("try-your-luck").innerHTML !== "WINNER!") {
-			let index1, index2, index3;
-			[index1, index2, index3] = [rng(0, iconIdArray.length),
-										rng(0, iconIdArray.length),
-										rng(0, iconIdArray.length)];
-			spinCount += 1;
-			document.getElementById("num-spins").innerHTML = spinCount;
-			console.log(index1, index2, index3);
-			magicAct(index1, index2, index3);
-			winCondition(index1, index2, index3);
-		}
-	});
-});
-*/

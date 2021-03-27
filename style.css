@@ -18,7 +18,7 @@
 
 body {
 	background-color: var(--bgColor);
-	margin: 50px 50px 0px 50px;
+	margin: 20px 20px 0px 20px;
 	font-family: system-ui;
 }
 
@@ -30,7 +30,7 @@ body {
 	font-weight: 400;
 	font-family: "Ranchers", cursive;
 	text-align: center;
-	margin: 50px 50px 50px 50px;
+	margin: 40px;
 	color: var(--titleBaseTextColor);
 }
 
@@ -108,7 +108,7 @@ body {
 #spin-btn:hover { background-color: rgb(140, 251, 255); }
 
 .footer-container {
-	padding: 0px 10px 0px 10px;
+	padding: 0px 20px 0px 0px;
 	bottom: 0;
 	right: 2;
 	width: 100%;
@@ -143,9 +143,14 @@ body {
 	background-color: whitesmoke;
 }
 
-#stats-title {
-	padding: 0px;
+#stats-title { padding: 0px; }
+
+#stats-title a {
+	color: black;
+	text-decoration: none;
 }
+
+#stats-title a:hover{ color: rgb(117, 43, 255); }
 
 .game-stats {
 	display: flex;
@@ -156,11 +161,8 @@ body {
 
 .ul { text-decoration: underline; }
 
-#num-spins ,
-#most-spins ,
-#least-spins ,
-#win-spins ,
-#lose-spins { 
+.number {
 	font-weight: bold;
 	padding-left: 10px;
+	font-size: 1.15em;
 }
