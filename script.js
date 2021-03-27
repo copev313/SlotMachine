@@ -1,10 +1,10 @@
-/**
+/*****************************************************************************
  *  script.js
  *  ---------
  *  Where all the fun happens :)
  *  
- *  Created by: E.Cope			Last edit: 3/27/21
- */
+ *  Created by: E.Cope						Last edit: 3/27/21
+ *****************************************************************************/
 
 //store the classes and ids we'll be manipulating
 const iconIdsArr = ["#icon-1", "#icon-2", "#icon-3", "#icon-4", "#icon-5"];
@@ -54,7 +54,7 @@ function magicAct(num1, num2, num3) {
 }
 
 //checks to see if the player has won
-function winCondition(num1, num2, num3) {
+function winCondition(num1, num2, num3, spinCount) {
 	if (num1 == num2 && num2 == num3) {
 		//change sign to say WINNER!
 		$("#try-your-luck").text("WINNER!");
@@ -64,9 +64,23 @@ function winCondition(num1, num2, num3) {
 		$("#reset-btn").css("visibility", "visible");
 
 		//add 1 to wins stat
-		DataStore.wins += 1;
-		LocalStore.setItem("NUM_WINS", DataStore.wins);
+		let DS = DataStore;
+		let LS = LocalStore;
+		DS.wins += 1;
+		LS.setItem("NUM_WINS", DataStore.wins);
 
+		//update least and most spins stats
+		let least = DS.least;
+		if (least == 0) {
+			least = 9999;
+		}
+		let most = DS.most;
+		if (spinCount > most) {
+			LS.setItem("MOST_SPINS", spinCount);
+		}
+		if (spinCount < least) {
+			LS.setItem("LEAST_SPINS", spinCount);
+		}
 		//refresh stats data
 		refreshStats();
 	}
@@ -112,14 +126,7 @@ function resetLocalStorage() {
 	}
 }
 
-//TODO
-function handleLeastMost() {
-	let le = DataStore.least;
-	let mo = DataStore.most;
-	//...
-}
-
-///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 $(document).ready(function(){
 	//clear slots
@@ -136,7 +143,8 @@ $(document).ready(function(){
 		refreshStats();
 
 	} else { 
-		console.warn("Web Storage not supported!");
+		console.warn("Web Storage not supported! \
+					 Features for this site will be missing.");
 	}
 
 	//spin-btn event listener:
@@ -144,6 +152,7 @@ $(document).ready(function(){
 
 		//CASE -- We Won:
 		if ($("#try-your-luck").text() === "WINNER!") {
+			
 			return;
 		}
 		//CASE -- We Lost:
@@ -168,12 +177,9 @@ $(document).ready(function(){
 			//display the appropriate icons based on the random indices
 			magicAct(dice[0], dice[1], dice[2]);
 			//check if we've won
-			winCondition(dice[0], dice[1], dice[2]);
+			winCondition(dice[0], dice[1], dice[2], spinCount);
 		}
-
-		//TOSO: update most and least spins stats
-		handleLeastMost();
-
+		
 		//refresh stats
 		refreshStats();
 	});
